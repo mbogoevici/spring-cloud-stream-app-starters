@@ -73,6 +73,10 @@ public class DataStoreWriterFactoryBean implements InitializingBean, DisposableB
 
 	private TaskExecutor taskExecutor;
 
+	private volatile int phase;
+
+	private volatile boolean autoStartup = true;
+
 	@Override
 	public void destroy() throws Exception {
 		storeWriter = null;
@@ -210,6 +214,14 @@ public class DataStoreWriterFactoryBean implements InitializingBean, DisposableB
 		this.taskExecutor = taskExecutor;
 	}
 
+	public void setPhase(int phase) {
+		this.phase = phase;
+	}
+
+	public void setAutoStartup(boolean autoStartup) {
+		this.autoStartup = autoStartup;
+	}
+
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
 		this.beanFactory = beanFactory;
@@ -246,7 +258,7 @@ public class DataStoreWriterFactoryBean implements InitializingBean, DisposableB
 
 	@Override
 	public boolean isAutoStartup() {
-		return false;
+		return autoStartup;
 	}
 
 	@Override
@@ -259,6 +271,6 @@ public class DataStoreWriterFactoryBean implements InitializingBean, DisposableB
 
 	@Override
 	public int getPhase() {
-		return Integer.MIN_VALUE;
+		return phase;
 	}
 }
